@@ -83,68 +83,64 @@ void executeCMD(const char *cmd, char *result)
 }
 int main()
 {
-    string pos;
-    vector<string>filenames;
-    pos="input/4A/filename.txt";
-    filenames=read_names(pos);
-    for(int i=0;i<filenames.size()-1;i++)
+    vector<string>menu({"4A/","50A/"});
+    for(int l=0;l<menu.size();l++)
     {
-        for(int j=i+1;j<filenames.size();j++)
+        string pos;
+        vector<string>filenames;
+        pos="input/"+menu[l]+"filename.txt";
+        filenames=read_names(pos);
+        string pos1;
+        pos1="input/"+menu[l]+"stdin_format.txt";
+        for(int i=0;i<filenames.size()-1;i++)
         {
-            string tmp1=filenames[i];
-            string tmp2=filenames[j];
-            if(tmp2==""||tmp1=="") continue;
-            // string txt1="input/4A/"+tmp1+".txt";
-            // string txt2="input/4A/"+tmp2+".txt";
-            // cout<<txt1<<" "<<txt2<<endl;
-            bool flag=1;
-            for(int k=0;k<50;k++)
+            for(int j=i+1;j<filenames.size();j++)
             {
-                string cmmd1="./randominput.out >randomin.txt";
-                char res1[1024]={};
-                const char* cmd1=cmmd1.c_str();
-                executeCMD(cmd1,res1);
-                string cmmd2="./input/4A/"+tmp1+".out "+" <randomin.txt";
-                char res2[1024]={};
-                const char* cmd2=cmmd2.c_str();
-                executeCMD(cmd2, res2);
-                string cmmd3="./input/4A/"+tmp2+".out "+" <randomin.txt";
-                char res3[1024]={};
-                const char* cmd3=cmmd3.c_str();
-                executeCMD(cmd3, res3);
-                // ifstream ifs;
-                // string str1,str2;
-                // ifs.open(txt1);
-                // while(!ifs.eof()) str1+=ifs.get();
-                // ifs.close();
-                // while(!ifs.eof()) str2+=ifs.get();
-                // ifs.close();
-                string ans2=string(res2);
-                string ans3=string(res3);
-                cout<<res2<<" "<<res3<<endl;
-                if(ans2==ans3) cout<<"yes"<<endl;
+                string tmp1=filenames[i];
+                string tmp2=filenames[j];
+                if(tmp2==""||tmp1=="") continue;
+                bool flag=1;
+                for(int k=0;k<50;k++)
+                {
+                    string cmmd1="./randominput.out "+pos1+" >randomin.txt";
+                    char res1[1024]={};
+                    const char* cmd1=cmmd1.c_str();
+                    executeCMD(cmd1,res1);
+                    string cmmd2="./input/"+menu[l]+tmp1+".out "+" <randomin.txt";
+                    char res2[1024]={};
+                    const char* cmd2=cmmd2.c_str();
+                    executeCMD(cmd2, res2);
+                    string cmmd3="./input/"+menu[l]+tmp2+".out "+" <randomin.txt";
+                    char res3[1024]={};
+                    const char* cmd3=cmmd3.c_str();
+                    executeCMD(cmd3, res3);
+                    string ans2=string(res2);
+                    string ans3=string(res3);
+                    cout<<res2<<" "<<res3<<endl;
+                    if(ans2==ans3) cout<<"yes"<<endl;
+                    else
+                    {
+                        cout<<"no"<<endl;
+                        flag=0;
+                        break;
+                    }
+                }
+                if(flag==1)
+                {
+                    ofstream ofm;
+                    ofm.open("equal.csv",ios::app);
+                    ofm<<"input/"+menu[l]+tmp1 +".cpp"<<" "<< "input/"+menu[l]+tmp2+".cpp"<<endl;
+                    ofm.close();
+                }
                 else
                 {
-                    cout<<"no"<<endl;
-                    flag=0;
-                    break;
+                    ofstream ofm;
+                    ofm.open("inequal.csv",ios::app);
+                    ofm<<"input/"+menu[l]+tmp1 +".cpp"<< " "<<"input/"+menu[l]+tmp2+".cpp"<<endl;
+                    ofm.close();
                 }
+                
             }
-            if(flag==1)
-            {
-                ofstream ofm;
-                ofm.open("equal.csv",ios::app);
-                ofm<<"input/4A/"+tmp1 +".cpp"<<" "<< "input/4A/"+tmp2+".cpp"<<endl;
-                ofm.close();
-            }
-            else
-            {
-                ofstream ofm;
-                ofm.open("inequal.csv",ios::app);
-                ofm<<"input/4A/"+tmp1 +".cpp"<< " "<<"input/4A/"+tmp2+".cpp"<<endl;
-                ofm.close();
-            }
-            
         }
     }
     return 0;

@@ -73,10 +73,13 @@ vector<int> get_random_input(vector<vector<int>>nums)
     }
     return ans;
 }
-int main()
+int main(int argc,char* argv[])
 {
     string pos;
-    pos="input/4A/stdin_format.txt";
+    // pos="input/4A/stdin_format.txt";
+    // cin>>pos;
+    pos=argv[1];
+    // cout<<pos<<endl;
     vector<vector<int>>tmp;
     tmp=read_file(pos);
     vector<int>tmp1;

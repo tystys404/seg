@@ -84,20 +84,24 @@ void executeCMD(const char *cmd, char *result)
 int main()
 {
     string pos;
-    vector<string>filenames;
-    pos="input/4A/filename.txt";
-    filenames=read_names(pos);
-    for(int i=0;i<filenames.size();i++)
+    vector<string>menu({"4A/","50A/"});
+    for(int l=0;l<menu.size();l++)
     {
-        string tmp=filenames[i];
-        string tmp1="input/4A/"+tmp+".cpp";
-        string tmp2="input/4A/"+tmp+".out";
-        cout<<tmp1<<" "<<tmp2<<endl;
-        string cmmd="g++ "+tmp1+" -o "+tmp2;
-        cout<<cmmd;
-        char res[1024]={};
-        const char* cmd=cmmd.c_str();
-        executeCMD(cmd, res);
+        vector<string>filenames;
+        pos="input/"+menu[l]+"filename.txt";
+        filenames=read_names(pos);
+        for(int i=0;i<filenames.size();i++)
+        {
+            string tmp=filenames[i];
+            string tmp1="input/"+menu[l]+tmp+".cpp";
+            string tmp2="input/"+menu[l]+tmp+".out";
+            cout<<tmp1<<" "<<tmp2<<endl;
+            string cmmd="g++ "+tmp1+" -o "+tmp2;
+            cout<<cmmd;
+            char res[1024]={};
+            const char* cmd=cmmd.c_str();
+            executeCMD(cmd, res);
+        }
     }
     return 0;
 }
